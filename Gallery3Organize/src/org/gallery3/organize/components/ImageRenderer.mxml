@@ -80,6 +80,7 @@
 			protected function dataChangeHandler(event:FlexEvent): void {
 				if (data != null) {
 					var width: Number, height: Number;
+					albumIcon.visible = GalleryItem(data).type == "album";
 					var bmData: BitmapData = GalleryItem(data).thumbnailData;
 					if (bmData == null) {
 						var asset: BitmapAsset;
@@ -137,4 +138,6 @@
 	
 	<mx:Image id="thumbnailContainer" maxWidth="90" maxHeight="90" maintainAspectRatio="true"
 			  toolTip="{itemTitle}" source="{bmBitmap}" x="{xOffset}" y="{yOffset}"/>		
+	<mx:Image id="albumIcon" source="@Embed(source='assets/album.png')" visible="false"
+			  bottom="2" left="2" width="16" height="16" />
 </s:ItemRenderer>
