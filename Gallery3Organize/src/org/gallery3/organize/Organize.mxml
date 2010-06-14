@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* Gallery - a web based photo album viewer and editor
+* Copyright (C) 2000-2010 Bharat Mediratta
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or (at
+* your option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+* General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+<o:OrganizeDialog xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						 xmlns:s="library://ns.adobe.com/flex/spark" 
+						 xmlns:mx="library://ns.adobe.com/flex/mx" 
+						 xmlns:o="org.gallery3.organize.*" 
+						 xmlns:oc="org.gallery3.organize.components.*" 
+						 bottom="10" top="10" left="10" right="10">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.controls.Tree;
+			import mx.events.FlexEvent;
+			
+			import org.gallery3.api.GalleryAlbum;
+			import org.gallery3.organize.OrganizeDataDescriptor;
+			import org.gallery3.organize.OrganizeText;
+			import org.gallery3.organize.components.ThumbGrid;
+			import org.gallery3.organize.skins.GalleryButtonSkin;
+			import org.gallery3.organize.skins.IconButtonSkin;
+			
+			import spark.events.IndexChangeEvent;
+		]]>
+	</fx:Script>
+	<oc:AlbumTree id="albumTree" useRollOver="true"
+				  height="100%" width="25%" borderStyle="none"
+				  change="onTreeSelectedChange(event)" />
+	<s:Group width="75%" height="100%" >
+		<s:Label text="" 
+				 id="organizeStatus"
+				 top="0" height="20" left="0" right="0" paddingTop="5"/>
+		<oc:ThumbGrid id="imageGrid" 
+					  dataProvider="{new ArrayCollection()}"
+					  itemRenderer="org.gallery3.organize.components.ImageRenderer"
+					  borderVisible="true"
+					  dragEnabled="true"
+					  dropEnabled="true"
+					  allowMultipleSelection="true"
+					  change="onThumbChangeHandler(event)"
+					  valueCommit="onThumbValueCommitHandler(event)"
+					  top="20" bottom="50" right="0" left="0">
+		</oc:ThumbGrid>
+		<s:HGroup bottom="0" height="50" left="0" right="0"
+				  verticalAlign="middle">
+			<s:ComboBox 
+				id="sortColumn"
+				focusEnabled="false"
+				dataProvider="{sortColumnData}"
+				change="onSortColumnChange(event)"
+				width="135"
+				/>
+			<s:ComboBox 
+				id="sortDirection"
+				focusEnabled="false"
+				dataProvider="{sortDirectionData}"
+				change="onSortDirectionChange(event)"
+				width="110"
+				/>
+			<mx:Spacer width="100%" height="100%"/>
+			<oc:IconButton id="rotateCCW" 
+						   height="32" width="32"
+						   visible="false"
+						   enabled="false"
+						   toolTip="{translations.rotateCCW}"
+						   icon="@Embed(source='assets/rotate_ccw.png')"
+						   skinClass="org.gallery3.organize.skins.IconButtonSkin"
+						   buttonDown="onRotateCCW(event)" /> 
+			<oc:IconButton id="rotateCW" 
+						   height="32" width="32"
+						   visible="false"
+						   enabled="false"
+						   toolTip="{translations.rotateCW}"
+						   icon="@Embed(source='assets/rotate_cw.png')"
+						   skinClass="org.gallery3.organize.skins.IconButtonSkin"
+						   buttonDown="onRotateCW(event)" /> 
+			<oc:IconButton id="addAlbum" 
+						   height="32" width="32"
+						   toolTip="{translations.addAlbum}"
+						   icon="@Embed(source='assets/album_add.png')"
+						   skinClass="org.gallery3.organize.skins.IconButtonSkin"
+						   buttonDown="onAddAlbum(event)" /> 
+			<oc:IconButton id="addImages" 
+						   height="32" width="32"
+						   toolTip="{translations.addImages}"
+						   icon="@Embed(source='assets/image_add.png')"
+						   skinClass="org.gallery3.organize.skins.IconButtonSkin"
+						   buttonDown="onAddContent(event)" /> 
+			<oc:IconButton id="deleteImages" 
+						   height="32" width="32"
+						   enabled="false"
+						   toolTip="{translations.deleteSelected}"
+						   icon="@Embed(source='assets/trashcan.png')"
+						   skinClass="org.gallery3.organize.skins.IconButtonSkin"
+						   buttonDown="onDeleteSelected(event)" /> 
+			<s:Button label="{OrganizeText.instance.close}" 
+					  buttonDown="onDialogClose(event)"
+					  skinClass="org.gallery3.organize.skins.GalleryButtonSkin"
+					  id="dialogClose" />
+		</s:HGroup>
+	</s:Group>
+</o:OrganizeDialog>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties includeAllClasses="false" version="3">
+  <includeClasses>
+    <classEntry path="org.gallery3.organize.OrganizeDialog"/>
+    <classEntry path="org.gallery3.organize.Organize"/>
+    <classEntry path="org.gallery3.organize.components.ProcessItemQueue"/>
+    <classEntry path="org.gallery3.organize.components.ProgressDialog"/>
+    <classEntry path="org.gallery3.organize.components.ErrorDialog"/>
+  </includeClasses>
+  <includeResources>
+    <resourceEntry destPath="album_add.png" sourcePath="album_add.png"/>
+    <resourceEntry destPath="rotate_cw.png" sourcePath="rotate_cw.png"/>
+    <resourceEntry destPath="defaultAlbum.png" sourcePath="defaultAlbum.png"/>
+    <resourceEntry destPath="trashcan.png" sourcePath="trashcan.png"/>
+    <resourceEntry destPath="image_add.png" sourcePath="image_add.png"/>
+    <resourceEntry destPath="defaultImage.png" sourcePath="defaultImage.png"/>
+    <resourceEntry destPath="google_home.png" sourcePath="google_home.png"/>
+    <resourceEntry destPath="rotate_ccw.png" sourcePath="rotate_ccw.png"/>
+  </includeResources>
+  <namespaceManifests/>
+</flexLibProperties>

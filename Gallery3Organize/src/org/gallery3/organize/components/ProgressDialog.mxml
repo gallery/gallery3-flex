@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* Gallery - a web based photo album viewer and editor
+* Copyright (C) 2000-2010 Bharat Mediratta
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or (at
+* your option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+* General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" width="392" 
+			   title="Task Progress" 
+			   height.hasSubtask="210" height.basic="145" 
+			   skinClass="org.gallery3.organize.skins.GalleryTitleWindowSkin">
+	<s:layout>
+		<s:VerticalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" />
+	</s:layout>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:states>
+		<s:State name="hasSubtask" />
+		<s:State name="basic" />
+	</s:states>
+	<s:VGroup height="58" top="10" right="10" left="10" id="subTask" paddingLeft="5" paddingRight="5" paddingTop="5" paddingBottom="5" includeIn="hasSubtask">
+		<s:Label x="10" y="10" text="Sub task progress"/>
+		<mx:ProgressBar width="361" id="subTaskProgressBar"/>
+	</s:VGroup>
+	<s:VGroup height="58" bottom="10" left="10" right="10" paddingLeft="5" paddingRight="5" paddingTop="5" paddingBottom="5">
+		<s:Label x="10" y="10" text="Overall progress"/>
+		<mx:ProgressBar width="361" mode="manual" id="overallProgressBar"/>
+	</s:VGroup>
+</s:TitleWindow>

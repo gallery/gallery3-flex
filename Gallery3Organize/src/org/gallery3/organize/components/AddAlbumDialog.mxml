@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* Gallery - a web based photo album viewer and editor
+* Copyright (C) 2000-2010 Bharat Mediratta
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or (at
+* your option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+* General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 width="494" height="368" 
+		 close="onCloseHandler(event)"
+		 skinClass="org.gallery3.organize.skins.GalleryTitleWindowSkin"
+		 title="Add album (needs translation)" width.normal="372" height.normal="332">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="error" />
+	</s:states>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			import mx.rpc.Fault;
+			import mx.rpc.events.FaultEvent;
+			import mx.utils.StringUtil;
+			
+			import org.gallery3.api.GalleryAlbum;
+			import org.gallery3.api.GalleryItem;
+			import org.gallery3.api.GalleryResource;
+			import org.gallery3.api.GalleryRestResponder;
+			import org.gallery3.api.GalleryRestToken;
+			import org.gallery3.organize.OrganizeText;
+			
+			import spark.events.TextOperationEvent;
+			
+			private var _album: GalleryAlbum = null;
+			private static var WHITESPACE_PATTERN: RegExp = /\s/g;
+			
+			protected function onCloseHandler(event:CloseEvent): void {
+				PopUpManager.removePopUp(this);
+			}
+
+			public function get parentAlbum(): GalleryAlbum {
+				return _album;
+			}
+			public function set parentAlbum(value: GalleryAlbum): void {
+				_album = value;
+			}
+
+			protected function onAddFormHandler(event:MouseEvent): void {
+				this.currentState = "normal";
+				var item: GalleryItem = GalleryResource.factory("item") as GalleryItem;
+				item.url = _album.url;			//	When we add set the url to the parent
+				item.type = "album";
+				item.name = albumName.text;
+				item.title = albumTitle.text;
+				item.description = description.text;
+				item.slug = slug.text;
+				var self: AddAlbumDialog = this;
+				item.save().addResponder(new GalleryRestResponder(
+					function(resource: Object): void {
+						PopUpManager.removePopUp(self);
+						_album.refreshResource().addResponder(new GalleryRestResponder(
+							function(resource: Object): void {},
+							function (fault: Fault): void {
+								ErrorDialog.display(fault as Fault);
+							}));
+					},
+					function (fault: Fault): void {
+						self.currentState = "error";
+						for (var field: String in fault.content) {
+							self[field + "Error"].text = fault.content[field];
+						}
+					}));
+			}
+
+			protected function onCancelHandler(event:MouseEvent): void {
+				PopUpManager.removePopUp(this);
+			}
+
+			protected function onChangeHandler(event:TextOperationEvent): void {
+				submitForm.enabled = true;
+			}
+			
+			protected function onChangeTitleHandler(event:TextOperationEvent): void {
+				submitForm.enabled = true;
+				slug.text = albumName.text = albumTitle.text.replace(WHITESPACE_PATTERN, "_").toLowerCase();
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Label y="10" text="Title" id="labelTitle" 
+			 paddingTop="5" paddingBottom="5" 
+			 width="94" paddingLeft="5" x="10"/>
+	<s:TextInput y="10" id="albumTitle"
+				 width="224" x="128"
+				 change="onChangeTitleHandler(event)"/>
+	<s:Label x="10" y="40" text="Description" paddingLeft="5" 
+			 paddingTop="5" paddingBottom="5" id="labelDescription"/>
+	<s:TextArea x="128" y="40" width="224" id="description"
+				change="onChangeHandler(event)"/>
+	<s:Label x="10" y="200" text="Directory name" paddingLeft="5" 
+			 paddingTop="5" paddingBottom="5" width="94" id="labelName" />
+	<s:TextInput x="128" y="200" width="224" id="albumName"
+				 change="onChangeHandler(event)"/>
+	<s:Label x="10" y="230" text="Internet Address" paddingLeft="5" 
+			 paddingTop="5" paddingBottom="5" id="labelSlug" width="110"/>
+	<s:TextInput x="128" y="230" width="224" id="slug" 
+				 change="onChangeHandler(event)"/>
+	<s:HGroup width="100%" bottom="10" right="10">
+		<mx:Spacer width="100%" />
+		<s:Button label="Add" id="submitForm" enabled="false"
+				  skinClass="org.gallery3.organize.skins.GalleryButtonSkin"
+				  click="onAddFormHandler(event)"/>
+		<s:Button label="Cancel" id="cancelForm" 
+				  skinClass="org.gallery3.organize.skins.GalleryButtonSkin"
+				  click="onCancelHandler(event)"/>
+	</s:HGroup>
+	<s:Label x="10" y="270" text="{OrganizeText.instance.addAlbumError}" width="342" height="19" fontWeight="bold" verticalAlign="middle" color="#FF0000" includeIn="error"/>
+	<s:Label x="360" y="10" height="22" width="122" verticalAlign="middle" id="titleError" color="#FF0000" fontWeight="bold" includeIn="error"/>
+	<s:Label x="360" y="39" height="22" width="122" verticalAlign="middle" id="descriptionError" color="#FF0000" fontWeight="bold" includeIn="error"/>
+	<s:Label x="360" y="200" height="22" width="122" verticalAlign="middle" id="nameError" color="#FF0000" fontWeight="bold" includeIn="error"/>
+	<s:Label x="362" y="234" height="22" width="122" verticalAlign="middle" id="slugError" color="#FF0000" fontWeight="bold" includeIn="error"/>
+</s:TitleWindow>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties includeAllClasses="true" version="3">
+  <includeClasses>
+    <classEntry path="org.gallery3.api.GalleryResource"/>
+    <classEntry path="org.gallery3.api.GalleryRestToken"/>
+    <classEntry path="org.gallery3.api.GalleryRestResponder"/>
+    <classEntry path="org.gallery3.api.GalleryTag"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
+</flexLibProperties>

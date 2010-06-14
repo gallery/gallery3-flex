@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* Gallery - a web based photo album viewer and editor
+* Copyright (C) 2000-2010 Bharat Mediratta
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or (at
+* your option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+* General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+<s:ItemRenderer name="ImageRenderer"
+				xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				width="{THUMBNAIL_CELL_WIDTH}"
+				height="{THUMBNAIL_CELL_HEIGHT}"
+				dataChange="dataChangeHandler(event)"
+				focusEnabled="false">
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.core.BitmapAsset;
+			import mx.events.FlexEvent;
+			
+			import org.gallery3.organize.OrganizeStyle;
+			import org.gallery3.api.GalleryItem;
+
+			private const THUMBNAIL_MAX_SIZE:Number = 90;
+			private const THUMBNAIL_CELL_WIDTH:Number = 100;
+			private const THUMBNAIL_CELL_HEIGHT:Number = 110;
+
+			[Bindable]
+			public var backgroundColor:uint = OrganizeStyle.instance.backgroundColor;
+			[Bindable]
+			public var selectedColor:uint = OrganizeStyle.instance.selectionColor;
+			[Bindable]
+			public var hoverColor:uint = OrganizeStyle.instance.rollOverColor;
+			[Bindable]
+			public var borderColor:uint = OrganizeStyle.instance.borderColor;
+
+			[Embed(source="assets/defaultImage.png")]
+			[Bindable]
+			public var defaultImage:Class;
+			
+			[Embed(source="assets/defaultAlbum.png")]
+			[Bindable]
+			public var defaultAlbum:Class;
+			
+			[Bindable]
+			private var bmBitmap: Bitmap;
+			
+			[Bindable]
+			private var itemTitle: String;
+			
+			[Bindable]
+			private var xOffset:int;
+
+			[Bindable]
+			private var yOffset:int;
+
+			public override function set data(value:Object):void {
+				yOffset = xOffset = 0;
+				bmBitmap = null; 
+				itemTitle = "itemTitle";
+				super.data = value;
+			}
+			protected function dataChangeHandler(event:FlexEvent): void {
+				if (data != null) {
+					var width: Number, height: Number;
+					var bmData: BitmapData = GalleryItem(data).thumbnailData;
+					if (bmData == null) {
+						var asset: BitmapAsset;
+						if (GalleryItem(data).type == "album") {
+							asset = new defaultAlbum() as BitmapAsset;
+						} else {
+							asset = new defaultImage() as BitmapAsset;
+						}
+						bmData = asset.bitmapData.clone();
+					} else {
+						bmData = bmData.clone();
+					}
+					if (bmData.width > THUMBNAIL_MAX_SIZE || bmData.height > THUMBNAIL_MAX_SIZE) {
+						if (bmData.width > bmData.height) {
+							height = THUMBNAIL_MAX_SIZE * bmData.height / bmData.width;
+							width = THUMBNAIL_MAX_SIZE;
+						} else {
+							width = THUMBNAIL_MAX_SIZE * bmData.width / bmData.height;
+							height = THUMBNAIL_MAX_SIZE;
+						}
+					} else {
+						height = bmData.height;
+						width = bmData.width;
+					}
+					yOffset = (THUMBNAIL_CELL_HEIGHT - height) / 2;
+					xOffset = (THUMBNAIL_CELL_WIDTH - width) / 2;
+					bmBitmap = new Bitmap(bmData);
+					itemTitle = GalleryItem(data).title;
+				} else {
+					yOffset = xOffset = 0;
+					bmBitmap = null; 
+					itemTitle = "itemTitle";
+				}
+				invalidateDisplayList();
+			}
+		]]>
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="hovered" />
+		<s:State name="selected" />
+	</s:states>
+	
+	<s:Rect id="thumbRect" left="1" right="1" top="1" bottom="1" >
+		<s:fill>
+			<s:SolidColor color="{backgroundColor}"
+						  color.hovered="{hoverColor}" color.selected="{selectedColor}" />
+		</s:fill>
+		<s:stroke>
+			<s:SolidColorStroke weight="1" color="{borderColor}"
+								color.hovered="{hoverColor}" color.selected="{selectedColor}" />
+		</s:stroke>	
+	</s:Rect>
+	
+	<mx:Image id="thumbnailContainer" maxWidth="90" maxHeight="90" maintainAspectRatio="true"
+			  toolTip="{itemTitle}" source="{bmBitmap}" x="{xOffset}" y="{yOffset}"/>		
+</s:ItemRenderer>

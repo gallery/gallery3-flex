@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0014)about:internet -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">	
+    <!-- 
+    Smart developers always View Source. 
+    
+    This application was built using Adobe Flex, an open source framework
+    for building rich Internet applications that get delivered via the
+    Flash Player or to desktops via Adobe AIR. 
+    
+    Learn more about Flex at http://flex.org 
+    // -->
+    <head>
+        <title>${title}</title>         
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<!-- Include CSS to eliminate any default margins/padding and set the height of the html element and 
+		     the body element to 100%, because Firefox, or any Gecko based browser, interprets percentage as 
+			 the percentage of the height of its parent container, which has to be set explicitly.  Initially, 
+			 don't display flashContent div so it won't show if JavaScript disabled.
+		-->
+        <style type="text/css" media="screen"> 
+			html, body	{ height:100%; }
+			body { margin:0; padding:0; overflow:auto; text-align:center; 
+			       background-color: ${bgcolor}; }   
+			#flashContent { display:none; }
+			#g-organize {
+			  background-color: #333333;
+			  border-color: #CCCCCC;
+			  color: #CCCCCC;
+			}
+			
+			#g-organize-hover {
+			  background-color: #666666;
+			  display: none;
+			}
+			
+			#g-organize-active {
+			  background-color: #888888;
+			  display: none;
+			}
+        </style>
+		
+		<!-- Enable Browser History by replacing useBrowserHistory tokens with two hyphens -->
+        <!-- BEGIN Browser History required section ${useBrowserHistory}>
+        <link rel="stylesheet" type="text/css" href="history/history.css" />
+        <script type="text/javascript" src="history/history.js"></script>
+        <!${useBrowserHistory} END Browser History required section -->  
+		    
+        <script type="text/javascript" src="swfobject.js"></script>
+        <script type="text/javascript">
+            function closeDialog() {
+              alert("Closing");
+            }
+            function setTitle(title) {
+            	// @todo remove the comment from the following line before a release build
+            	//$("#ui-dialog-title-g-dialog").text = "Organize " + title;
+            }
+            
+			function getOrganizeStyles() {
+			  return {
+			    color: 0xCCCCCC,
+			    backgroundColor: 0x333333,
+			    borderColor: 0xCCCCCC,
+			    rollOverColor: 0x666666,
+			    selectionColor: 0x888888
+			  };
+			}
+			
+			function getTextStrings() {
+			  var strings = {
+			    "statusText": "Drag and drop photos to re-order or move between album",
+			    "remoteError": "Remote server error, please contact your gallery administrator",
+			    "addAlbumError": "The above highlighted fields are invalid",
+			    "errorOccurred": "Remote error ocurred",
+			    "addAlbum": "Add album",
+			    "addImages": "Add photo",
+			    "deleteSelected": "Delete",
+			    "removeFileText": "Remove",
+			    "progressLabel": "Completed image %1 of %2",
+			    "moveTitle": "Move images",
+			    "deleteTitle": "Delete image",
+			    "uploadTitle": "Upload image",
+			    "cancel": "Cancel",
+			    "close": "Close",
+			    "rotateCCW": "Rotate counter clockwise",
+			    "rotateCW": "Rotate clockwise"
+			  };
+			  return strings;
+			}
+	
+			function getGalleryParameters() {
+        		return {
+      fileFilter: "{\"photo\":{\"label\":\"Images\",\"types\":[\"*.jpg\",\"*.jpeg\",\"*.png\",\"*.gif\"]},\"movie\":{\"label\":\"Movies\",\"types\":[\"*.flv\",\"*.mp4\"]}}",
+      domain: "sandbox.timalmdal.com",
+      sortOrder: "{\"ASC\":\"Ascending\",\"DESC\":\"Descending\"}",
+      sortFields: "{\"weight\":\"Manual\",\"captured\":\"Date captured\",\"created\":\"Date uploaded\",\"title\":\"Title\",\"updated\":\"Date modified\",\"view_count\":\"Number of views\",\"rand_key\":\"Random\"}",
+      baseUrl: "http://sandbox.timalmdal.com/gallery3/index.php/rest/",
+      accessKey: "cf23674e83c39c78d046dfd811af6ba4",
+      albumId: "1",
+      controller: "http://sandbox.timalmdal.com/gallery3/index.php/organize/"
+        		};
+        	}
+        						
+            <!-- For version detection, set to min. required Flash Player version, or 0 (or 0.0.0), for no version detection. --> 
+            var swfVersionStr = "${version_major}.${version_minor}.${version_revision}";
+            <!-- To use express install, set to playerProductInstall.swf, otherwise the empty string. -->
+            var xiSwfUrlStr = "${expressInstallSwf}";
+            var flashvars = {
+            };
+            var params = {};
+            params.quality = "high";
+            params.bgcolor = "${bgcolor}";
+            params.allowNetworking = "all";
+            params.allowscriptaccess = "sameDomain";
+            params.allowfullscreen = "true";
+            var attributes = {};
+            attributes.id = "${application}";
+            attributes.name = "${application}";
+            attributes.align = "middle";
+            swfobject.embedSWF(
+                "${swf}.swf", "flashContent", 
+                "${width}", "${height}", 
+                swfVersionStr, xiSwfUrlStr, 
+                flashvars, params, attributes);
+			<!-- JavaScript enabled so display the flashContent div in case it is not replaced with a swf object. -->
+			swfobject.createCSS("#flashContent", "display:block;text-align:left;");
+        </script>
+    </head>
+    <body>
+        <!-- SWFObject's dynamic embed method replaces this alternative HTML content with Flash content when enough 
+			 JavaScript and Flash plug-in support is available. The div is initially hidden so that it doesn't show
+			 when JavaScript is disabled.
+		-->
+        <div id="flashContent">
+        	<p>
+	        	To view this page ensure that Adobe Flash Player version 
+				${version_major}.${version_minor}.${version_revision} or greater is installed. 
+			</p>
+			<script type="text/javascript"> 
+				var pageHost = ((document.location.protocol == "https:") ? "https://" :	"http://"); 
+				document.write("<a href='http://www.adobe.com/go/getflashplayer'><img src='" 
+								+ pageHost + "www.adobe.com/images/shared/download_buttons/get_flash_player.gif' alt='Get Adobe Flash player' /></a>" ); 
+			</script> 
+        </div>
+	   	
+       	<noscript>
+            <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="${width}" height="${height}" id="${application}">
+                <param name="movie" value="${swf}.swf" />
+                <param name="quality" value="high" />
+                <param name="bgcolor" value="${bgcolor}" />
+                <param name="allowScriptAccess" value="sameDomain" />
+                <param name="allowFullScreen" value="true" />
+                <!--[if !IE]>-->
+                <object type="application/x-shockwave-flash" data="${swf}.swf" width="${width}" height="${height}">
+                    <param name="quality" value="high" />
+                    <param name="bgcolor" value="${bgcolor}" />
+                    <param name="allowScriptAccess" value="sameDomain" />
+                    <param name="allowFullScreen" value="true" />
+                <!--<![endif]-->
+                <!--[if gte IE 6]>-->
+                	<p> 
+                		Either scripts and active content are not permitted to run or Adobe Flash Player version
+                		${version_major}.${version_minor}.${version_revision} or greater is not installed.
+                	</p>
+                <!--<![endif]-->
+                    <a href="http://www.adobe.com/go/getflashplayer">
+                        <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash Player" />
+                    </a>
+                <!--[if !IE]>-->
+                </object>
+                <!--<![endif]-->
+            </object>
+	    </noscript>		
+   </body>
+</html>

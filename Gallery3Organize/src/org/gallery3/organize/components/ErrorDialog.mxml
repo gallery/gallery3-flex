@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* Gallery - a web based photo album viewer and editor
+* Copyright (C) 2000-2010 Bharat Mediratta
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or (at
+* your option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+* General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   width="400" 
+			   title="{OrganizeText.instance.errorOccurred}" 
+			   skinClass="org.gallery3.organize.skins.GalleryTitleWindowSkin"
+			   close="onCloseDialogHandler(event)" height="148">
+	<s:layout>
+		<s:BasicLayout/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			import mx.rpc.Fault;
+
+			import org.gallery3.organize.OrganizeText;
+
+			[Bindable]
+			private var _fault: Fault;
+
+			protected function onCloseDialogHandler(event:CloseEvent):void {
+				PopUpManager.removePopUp(this);
+			}
+
+			public function get fault(): Fault {
+				return _fault;
+			}
+			public function set fault(fault: Fault): void {
+				_fault = fault;
+			}
+			
+			public static function display(fault: Fault): void {
+				var mainWindow: DisplayObject = FlexGlobals.topLevelApplication.organizeDialog as DisplayObject;
+				var dialog: ErrorDialog = PopUpManager.createPopUp(mainWindow, ErrorDialog, true) as ErrorDialog;
+				dialog.fault = fault;
+				PopUpManager.centerPopUp(dialog);
+			}
+
+			protected function onDialogCloseButtonClicked(event:FlexEvent):void {
+				PopUpManager.removePopUp(this);
+			}
+
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:HGroup top="0" right="0" left="0" height="67" paddingLeft="10" paddingTop="10"  paddingRight="10" paddingBottom="10">
+		<mx:Image width="48" height="48" source="@Embed(source='assets/Error.png')"/>
+		<s:TextArea height="46" id="errorText"
+					text="{OrganizeText.instance.remoteError}"  width="100%"/>
+	</s:HGroup>
+	<s:HGroup bottom="0" right="0" left="0" top="75" 
+			  paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+		<mx:Spacer width="100%"/>
+		<s:Button label="{OrganizeText.instance.close}" 
+				  buttonDown="onDialogCloseButtonClicked(event)"
+				  skinClass="org.gallery3.organize.skins.GalleryButtonSkin"
+				  id="dialogClose" />
+	</s:HGroup>
+</s:TitleWindow>
