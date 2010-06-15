@@ -22,7 +22,9 @@
 						 xmlns:mx="library://ns.adobe.com/flex/mx" 
 						 xmlns:o="org.gallery3.organize.*" 
 						 xmlns:oc="org.gallery3.organize.components.*" 
-						 bottom="10" top="10" left="10" right="10">
+						 width="{dialogWidth}" height="{dialogHeight}"
+						 paddingLeft="10" paddingRight="10" 
+						 paddingTop="10" paddingBottom="10">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
@@ -43,9 +45,9 @@
 		]]>
 	</fx:Script>
 	<oc:AlbumTree id="albumTree" useRollOver="true"
-				  height="100%" width="25%" borderStyle="none"
+				  width="25%" borderStyle="none"
 				  change="onTreeSelectedChange(event)" />
-	<s:Group width="75%" height="100%" >
+	<s:Group id="detailPane" width="75%">
 		<s:Label text="" 
 				 id="organizeStatus"
 				 top="0" height="20" left="0" right="0" paddingTop="5"/>
@@ -58,64 +60,62 @@
 					  allowMultipleSelection="true"
 					  change="onThumbChangeHandler(event)"
 					  valueCommit="onThumbValueCommitHandler(event)"
-					  top="20" bottom="50" right="0" left="0">
+					  top="20" bottom="45" right="0" left="0">
 		</oc:ThumbGrid>
-		<s:HGroup bottom="0" height="50" left="0" right="0"
-				  verticalAlign="middle">
-			<s:ComboBox 
-				id="sortColumn"
-				focusEnabled="false"
-				dataProvider="{sortColumnData}"
-				change="onSortColumnChange(event)"
-				width="135"
-				/>
-			<s:ComboBox 
-				id="sortDirection"
-				focusEnabled="false"
-				dataProvider="{sortDirectionData}"
-				change="onSortDirectionChange(event)"
-				width="110"
-				/>
-			<mx:Spacer width="100%" height="100%"/>
-			<oc:IconButton id="rotateCCW" 
-						   height="32" width="32"
-						   visible="false"
-						   enabled="false"
-						   toolTip="{translations.rotateCCW}"
-						   icon="@Embed(source='assets/rotate_ccw.png')"
-						   skinClass="org.gallery3.organize.skins.IconButtonSkin"
-						   buttonDown="onRotateCCW(event)" /> 
-			<oc:IconButton id="rotateCW" 
-						   height="32" width="32"
-						   visible="false"
-						   enabled="false"
-						   toolTip="{translations.rotateCW}"
-						   icon="@Embed(source='assets/rotate_cw.png')"
-						   skinClass="org.gallery3.organize.skins.IconButtonSkin"
-						   buttonDown="onRotateCW(event)" /> 
-			<oc:IconButton id="addAlbum" 
-						   height="32" width="32"
-						   toolTip="{translations.addAlbum}"
-						   icon="@Embed(source='assets/album_add.png')"
-						   skinClass="org.gallery3.organize.skins.IconButtonSkin"
-						   buttonDown="onAddAlbum(event)" /> 
-			<oc:IconButton id="addImages" 
-						   height="32" width="32"
-						   toolTip="{translations.addImages}"
-						   icon="@Embed(source='assets/image_add.png')"
-						   skinClass="org.gallery3.organize.skins.IconButtonSkin"
-						   buttonDown="onAddContent(event)" /> 
-			<oc:IconButton id="deleteImages" 
-						   height="32" width="32"
-						   enabled="false"
-						   toolTip="{translations.deleteSelected}"
-						   icon="@Embed(source='assets/trashcan.png')"
-						   skinClass="org.gallery3.organize.skins.IconButtonSkin"
-						   buttonDown="onDeleteSelected(event)" /> 
-			<s:Button label="{OrganizeText.instance.close}" 
-					  buttonDown="onDialogClose(event)"
-					  skinClass="org.gallery3.organize.skins.GalleryButtonSkin"
-					  id="dialogClose" />
-		</s:HGroup>
+		<s:Group bottom="0" height="45" left="0" right="0">
+			<s:HGroup height="45" left="0" verticalAlign="middle">
+				<s:ComboBox id="sortColumn"
+					focusEnabled="false"
+					dataProvider="{sortColumnData}"
+					change="onSortColumnChange(event)"
+					width="135" />
+				<s:ComboBox id="sortDirection"
+					focusEnabled="false"
+					dataProvider="{sortDirectionData}"
+					change="onSortDirectionChange(event)"
+					width="110" />
+			</s:HGroup>
+			<s:HGroup height="45" right="0" verticalAlign="middle">
+				<oc:IconButton id="rotateCCW" 
+							   height="32" width="32"
+							   visible="false"
+							   enabled="false"
+							   toolTip="{translations.rotateCCW}"
+							   icon="@Embed(source='assets/rotate_ccw.png')"
+							   skinClass="org.gallery3.organize.skins.IconButtonSkin"
+							   buttonDown="onRotateCCW(event)" /> 
+				<oc:IconButton id="rotateCW" 
+							   height="32" width="32"
+							   visible="false"
+							   enabled="false"
+							   toolTip="{translations.rotateCW}"
+							   icon="@Embed(source='assets/rotate_cw.png')"
+							   skinClass="org.gallery3.organize.skins.IconButtonSkin"
+							   buttonDown="onRotateCW(event)" /> 
+				<oc:IconButton id="addAlbum" 
+							   height="32" width="32"
+							   toolTip="{translations.addAlbum}"
+							   icon="@Embed(source='assets/album_add.png')"
+							   skinClass="org.gallery3.organize.skins.IconButtonSkin"
+							   buttonDown="onAddAlbum(event)" /> 
+				<oc:IconButton id="addImages" 
+							   height="32" width="32"
+							   toolTip="{translations.addImages}"
+							   icon="@Embed(source='assets/image_add.png')"
+							   skinClass="org.gallery3.organize.skins.IconButtonSkin"
+							   buttonDown="onAddContent(event)" /> 
+				<oc:IconButton id="deleteImages" 
+							   height="32" width="32"
+							   enabled="false"
+							   toolTip="{translations.deleteSelected}"
+							   icon="@Embed(source='assets/trashcan.png')"
+							   skinClass="org.gallery3.organize.skins.IconButtonSkin"
+							   buttonDown="onDeleteSelected(event)" /> 
+				<s:Button label="{OrganizeText.instance.close}" 
+						  buttonDown="onDialogClose(event)"
+						  skinClass="org.gallery3.organize.skins.GalleryButtonSkin"
+						  id="dialogClose" />
+			</s:HGroup>
+		</s:Group>
 	</s:Group>
 </o:OrganizeDialog>

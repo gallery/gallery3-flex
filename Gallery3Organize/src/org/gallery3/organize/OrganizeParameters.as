@@ -49,6 +49,15 @@ package org.gallery3.organize {
 		}
 		
 		flash_proxy override function getProperty(name: *): * {
+			switch (name.localName) {
+				case "baseUrl":
+					return _data["protocol"] + "://" + _data["domain"] + "/" + _data["restUri"];
+				case "controller":
+					return _data["protocol"] + "://" + _data["domain"] + "/" + _data["controllerUri"];
+				default:
+					return _data[name];				
+			}
+			
 			return _data[name];
 		}
 		

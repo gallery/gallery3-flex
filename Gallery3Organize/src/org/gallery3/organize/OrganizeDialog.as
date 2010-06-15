@@ -52,6 +52,7 @@ package org.gallery3.organize {
 	
 	import spark.components.Button;
 	import spark.components.ComboBox;
+	import spark.components.Group;
 	import spark.components.Label;
 	import spark.events.IndexChangeEvent;
 	
@@ -61,6 +62,7 @@ package org.gallery3.organize {
 		
 		// References to Controls must be declared public
 		public var albumTree: AlbumTree;
+		public var detailPane: Group;
 		public var imageGrid: ThumbGrid;
 		public var sortColumn: ComboBox;
 		public var sortDirection: ComboBox;
@@ -76,6 +78,9 @@ package org.gallery3.organize {
 
 		public var openPath: ArrayCollection;
 
+		[Bindable] public var dialogWidth: Number = 600;
+		[Bindable] public var dialogHeight: Number = 400;                     
+			
 		[Bindable]
 		public var translations:OrganizeText;
 		[Bindable]
@@ -94,6 +99,13 @@ package org.gallery3.organize {
 		}
 
 		protected function contentCreationCompleteHandler(event: FlexEvent): void {
+			dialogWidth = OrganizeParameters.instance.dialogWidth;
+			dialogHeight = OrganizeParameters.instance.dialogHeight;
+			albumTree.width = dialogWidth * .25;
+			detailPane.width = dialogWidth * .75;
+			albumTree.height = detailPane.height = dialogHeight - 20;
+			invalidateParentSizeAndDisplayList();                                
+				
 			translations = OrganizeText.instance;
 			styles = OrganizeStyle.instance;
 			
