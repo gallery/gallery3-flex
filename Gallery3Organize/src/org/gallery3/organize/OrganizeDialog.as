@@ -131,6 +131,9 @@ package org.gallery3.organize {
 				function (fault: Object): void {
 					ErrorDialog.display(fault as Fault);
 				}));
+			imageGrid.addEventListener("ThumbGridItemsDropped", function(event: Event): void {
+				setSortColumn("weight");
+			});
 		}
 
 		protected function albumsUpdated(event: Event): void {

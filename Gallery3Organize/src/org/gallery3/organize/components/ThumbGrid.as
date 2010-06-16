@@ -283,6 +283,8 @@ package org.gallery3.organize.components {
 					album.refreshResource().addResponder(new GalleryRestResponder(
 						function(resource: Object): void {
 							self.invalidateProperties();
+							var event:Event = new Event("ThumbGridItemsDropped");
+							self.dispatchEvent(event);
 						},
 						function (fault: Fault): void {
 							ErrorDialog.display(fault as Fault);
