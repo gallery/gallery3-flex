@@ -228,14 +228,6 @@ package org.gallery3.organize {
 			loader.load(request);
 		}	
 
-		protected function onRotateCCW(event:FlexEvent):void {
-			// @todo implement or remove
-		}
-
-		protected function onRotateCW(event:FlexEvent):void {
-			// @todo implement or remove
-		}
-
 		private function _showAddAlbumDialog(fields: Object): void {
 			var dialog: AddAlbumDialog = PopUpManager.createPopUp(this, AddAlbumDialog, true) as AddAlbumDialog;
 			dialog.parentAlbum = albumTree.selectedItem as GalleryAlbum;

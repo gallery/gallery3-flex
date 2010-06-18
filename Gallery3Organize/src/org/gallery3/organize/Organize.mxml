@@ -76,22 +76,6 @@
 					width="110" />
 			</s:HGroup>
 			<s:HGroup height="45" right="0" verticalAlign="middle">
-				<oc:IconButton id="rotateCCW" 
-							   height="32" width="32"
-							   visible="false"
-							   enabled="false"
-							   toolTip="{translations.rotateCCW}"
-							   icon="@Embed(source='assets/rotate_ccw.png')"
-							   skinClass="org.gallery3.organize.skins.IconButtonSkin"
-							   buttonDown="onRotateCCW(event)" /> 
-				<oc:IconButton id="rotateCW" 
-							   height="32" width="32"
-							   visible="false"
-							   enabled="false"
-							   toolTip="{translations.rotateCW}"
-							   icon="@Embed(source='assets/rotate_cw.png')"
-							   skinClass="org.gallery3.organize.skins.IconButtonSkin"
-							   buttonDown="onRotateCW(event)" /> 
 				<oc:IconButton id="addAlbum" 
 							   height="32" width="32"
 							   toolTip="{translations.addAlbum}"
