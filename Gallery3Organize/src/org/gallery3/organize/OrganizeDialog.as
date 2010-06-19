@@ -129,7 +129,14 @@ package org.gallery3.organize {
 					
 					albumTree.dataProvider = [rootItem];
 					albumTree.validateNow();
-					albumTree.expandItem(rootItem, true, true, true);
+					if (openPath.length == 0) {
+						callLater(function(): void {
+							albumTree.selectedItem = albumTree.dataProvider.getItemAt(0);
+							onTreeSelectedChange(null);
+						});
+					} else {
+						albumTree.expandItem(rootItem, true, true, true);
+					}
 				},
 				function (fault: Object): void {
 					ErrorDialog.display(fault as Fault);
