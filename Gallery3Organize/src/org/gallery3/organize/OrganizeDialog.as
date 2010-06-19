@@ -98,14 +98,17 @@ package org.gallery3.organize {
 			addEventListener(FlexEvent.PREINITIALIZE, preinitializeHandler);
 		}
 
-		protected function contentCreationCompleteHandler(event: FlexEvent): void {
-			dialogWidth = OrganizeParameters.instance.dialogWidth;
-			dialogHeight = OrganizeParameters.instance.dialogHeight;
+		public function onAddedToStage(event: Event): void {
+			dialogWidth = this.stage.stageWidth;
+			dialogHeight = this.stage.stageHeight; 
 			albumTree.width = dialogWidth * .25;
 			detailPane.width = dialogWidth * .75;
 			albumTree.height = detailPane.height = dialogHeight - 20;
+			
 			invalidateParentSizeAndDisplayList();                                
-				
+		}
+		
+		protected function contentCreationCompleteHandler(event: FlexEvent): void {
 			translations = OrganizeText.instance;
 			styles = OrganizeStyle.instance;
 			

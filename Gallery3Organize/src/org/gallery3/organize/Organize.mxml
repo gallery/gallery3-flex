@@ -23,6 +23,7 @@
 						 xmlns:o="org.gallery3.organize.*" 
 						 xmlns:oc="org.gallery3.organize.components.*" 
 						 width="{dialogWidth}" height="{dialogHeight}"
+						 addedToStage="onAddedToStage(event)"
 						 paddingLeft="10" paddingRight="10" 
 						 paddingTop="10" paddingBottom="10">
 	<fx:Declarations>
@@ -42,6 +43,7 @@
 			import org.gallery3.organize.skins.IconButtonSkin;
 			
 			import spark.events.IndexChangeEvent;
+
 		]]>
 	</fx:Script>
 	<oc:AlbumTree id="albumTree" useRollOver="true"
@@ -60,10 +62,10 @@
 					  allowMultipleSelection="true"
 					  change="onThumbChangeHandler(event)"
 					  valueCommit="onThumbValueCommitHandler(event)"
-					  top="20" bottom="45" right="0" left="0">
+					  right="0" left="0" top="20" bottom="40">
 		</oc:ThumbGrid>
-		<s:Group bottom="0" height="45" left="0" right="0">
-			<s:HGroup height="45" left="0" verticalAlign="middle">
+		<s:Group bottom="0" height="40" left="0" right="0">
+			<s:HGroup height="40" left="0" verticalAlign="middle" bottom="0">
 				<s:ComboBox id="sortColumn"
 					focusEnabled="false"
 					dataProvider="{sortColumnData}"
@@ -75,7 +77,7 @@
 					change="onSortDirectionChange(event)"
 					width="110" />
 			</s:HGroup>
-			<s:HGroup height="45" right="0" verticalAlign="middle">
+			<s:HGroup height="40" right="0" verticalAlign="middle" bottom="0">
 				<oc:IconButton id="addAlbum" 
 							   height="32" width="32"
 							   toolTip="{translations.addAlbum}"
