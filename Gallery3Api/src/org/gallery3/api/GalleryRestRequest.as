@@ -157,9 +157,8 @@ package org.gallery3.api {
 					fault = new Fault(parts[1], parts[2], parts[3]);
 				} else {
 					if (loader.data != null) {
-						var detail: Object = JSON.decode(String(loader.data)) as Object;
-						fault = new Fault(token.statusCode, token.statusText, detail.message);
-						fault.content = detail.fields != null ? detail.fields : null;
+						fault = new Fault(token.statusCode, token.statusText, event.text);
+						fault.content = JSON.decode(String(loader.data)) as Object;
 					} else {
 						fault = new Fault(token.statusCode, token.statusText, event.text);
 					}
