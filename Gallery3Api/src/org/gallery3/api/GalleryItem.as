@@ -26,6 +26,7 @@ package org.gallery3.api {
 	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
 	import flash.net.FileReference;
+	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestHeader;
 	import flash.net.URLRequestMethod;
@@ -37,7 +38,10 @@ package org.gallery3.api {
 	import mx.events.CollectionEvent;
 	import mx.events.CollectionEventKind;
 	import mx.events.PropertyChangeEvent;
+	import mx.events.Request;
 	import mx.rpc.AsyncToken;
+	
+	import org.osmf.utils.URL;
 	
 	[Bindable("propertyChange")]
 	public dynamic class GalleryItem extends GalleryResource {
@@ -178,10 +182,30 @@ package org.gallery3.api {
 						// log the error, but don't display an error... the user will just see the default image
 						trace(event.text);
 					});
-					loader.load(new URLRequest(thumbUrl));
+					
+					// If there's a public url, use that because it'll be faster.  Else make a RESTful request
+					// to the data resource.
+					if (thumbUrlPublic) {
+						loader.load(new URLRequest(thumbUrlPublic));
+					} else {
+						// @todo: refactor this into GalleryRestRequest
+						var req:URLRequest = new URLRequest(thumbUrl);
+						req.method = URLRequestMethod.POST;
+						req.requestHeaders = [
+							new URLRequestHeader("Accept", "*/*"),
+							new URLRequestHeader("Cache-Control", "no-cache"),
+							new URLRequestHeader("X_GALLERY_REQUEST_METHOD", "GET"),
+							new URLRequestHeader("X_GALLERY_REQUEST_KEY", GalleryRestRequest.accessKey)
+						];
+						var url:URL = new URL(thumbUrl);
+						var size:String = url.getParamValue("size");
+						var urlVariables:URLVariables = new URLVariables();
+						urlVariables.size = size;
+						req.data = urlVariables;
+						loader.load(req);
+					}
 				}
-			}
-			
+			}			
 			return _thumbnailData;
 		}
 		
@@ -195,7 +219,11 @@ package org.gallery3.api {
 		public function get thumbUrl(): String {
 			return this.entity.thumb_url;
 		}
-
+		
+		public function get thumbUrlPublic(): String {
+			return this.entity.thumb_url_public;
+		}
+		
 		public function get thumbWidth(): Number {
 			return Number(this.entity.thumb_width);
 		}
