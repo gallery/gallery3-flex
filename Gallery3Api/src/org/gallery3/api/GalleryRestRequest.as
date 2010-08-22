@@ -52,8 +52,8 @@ package org.gallery3.api {
 			"405": "Method Not Allowed",
 			"500": "Internal Server Error"
 		}
-		public static const METHOD_HEADER: String = "X-Gallery-Request-Method";
-		public static const KEY_HEADER: String = "X-Gallery-Request-Key";
+		public static const METHOD_HEADER: String        = "X-Gallery-Request-Method";
+		public static const KEY_HEADER: String           = "X-Gallery-Request-Key";
 		private static const MULTIPART_BOUNDARY: String  = "----------196f00b77b968397849367c61a2080";
 		private static const MULTIPART_MARK: String      = "--";
 		private static const LF: String                  = "\r\n";

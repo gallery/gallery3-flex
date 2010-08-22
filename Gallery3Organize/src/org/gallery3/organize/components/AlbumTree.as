@@ -86,7 +86,7 @@ package org.gallery3.organize.components {
 			} else {
 				var item:IListItemRenderer = mouseEventToItemRenderer(event);
 				if (item != _lastHighlightItemRendererAtIndices && _lastHighlightItemRendererAtIndices) {
-					_updateHightlight(_lastHighlightItemRendererAtIndices, _lastHighlightItemIndices, false);
+					_updateHighlight(_lastHighlightItemRendererAtIndices, _lastHighlightItemIndices, false);
 				}
 			}
 		}
@@ -113,7 +113,7 @@ package org.gallery3.organize.components {
 						drawItem(UIDToItemRenderer(uid), isItemSelected(item.data), true, uid == caretUID);
 						var pt:Point = itemRendererToIndices(item);
 						if (pt) {		// during tweens, we may get null
-							_updateHightlight(item, pt, true);
+							_updateHighlight(item, pt, true);
 						}
 					}
 				}
@@ -131,11 +131,11 @@ package org.gallery3.organize.components {
 
 		override protected function dragExitHandler(event:DragEvent): void {
 			if (_lastHighlightItemRendererAtIndices) {
-				_updateHightlight(_lastHighlightItemRendererAtIndices, _lastHighlightItemIndices, false);
+				_updateHighlight(_lastHighlightItemRendererAtIndices, _lastHighlightItemIndices, false);
 			}
 		}
 
-		private function _updateHightlight(item:IListItemRenderer, pt:Point, showHighlight:Boolean): void {
+		private function _updateHighlight(item:IListItemRenderer, pt:Point, showHighlight:Boolean): void {
 			var uid:String = itemToUID(item.data);
 			drawItem(UIDToItemRenderer(uid), isItemSelected(item.data), showHighlight, uid == caretUID);
 			var evt:ListEvent = new ListEvent(showHighlight? ListEvent.ITEM_ROLL_OVER : ListEvent.ITEM_ROLL_OUT);

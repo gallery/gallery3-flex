@@ -38,7 +38,7 @@ package org.gallery3.api {
 	import mx.rpc.events.FaultEvent;
 	import mx.utils.ArrayUtil;
 	import mx.utils.ObjectUtil;
-	
+
 	use namespace flash_proxy;	
 	
 	[Event(name="collectionChange", type="mx.events.CollectionEvent")]
