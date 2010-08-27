@@ -49,7 +49,9 @@ package org.gallery3.api {
 		private var _isLoadingThumbnail:Boolean = false;
 		private var _thumbnailData: BitmapData = null;
 	
-		public function GalleryItem() {}
+		public function GalleryItem() {
+			super();
+		}
 	
 		public function get id(): int {
 			return this.entity.id;

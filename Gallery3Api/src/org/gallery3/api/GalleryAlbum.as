@@ -51,6 +51,7 @@ package org.gallery3.api {
 		private var _albums:ArrayCollection = new ArrayCollection();
 		
 		public function GalleryAlbum() {
+			super();
 			this.members = new ArrayCollection();
 			var self: GalleryAlbum = this;
 			_children.addEventListener(CollectionEvent.COLLECTION_CHANGE, 
@@ -108,7 +109,6 @@ package org.gallery3.api {
 				var item: GalleryItem = items.shift();
 				this.members.addItemAt(item.url, idx);
 			}
-			_dirty.push("members");
 			sortColumn = "weight";
 			sortOrder = "ASC";
 		}
@@ -117,7 +117,6 @@ package org.gallery3.api {
 		 *  @see mx.collections.ICollectionView#refresh()
 		 */
 		public override function refreshResource(): GalleryRestToken {
-			var membersDirty: Boolean = _dirty.indexOf("members") > -1;
 			var token: GalleryRestToken = super.refreshResource();
 			var self: GalleryAlbum = this;
 			token.addResponder(new GalleryRestResponder(

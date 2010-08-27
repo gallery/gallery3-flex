@@ -40,10 +40,8 @@ package org.gallery3.api {
 	use namespace flash_proxy;	
 	[Bindable("propertyChange")]
 	public dynamic class GalleryResource extends Proxy implements IEventDispatcher, IUID {
-
 		protected var _eventDispatcher:EventDispatcher;
 		protected var _values: Object = {};
-		protected var _dirty:Vector.<String> = new Vector.<String>();
 		protected var _isNew: Boolean;
 		
 		public static function loadResource(resourceUri: String, data: URLVariables=null): GalleryRestToken {
@@ -90,21 +88,38 @@ package org.gallery3.api {
 			if (data != null) {
 				resource.isNew = false;
 				for (var property: String in data) {
-					resource[property] = (property == "members") ? new ArrayCollection(data[property]) : data[property];
+					switch (property) {
+						case "members":
+							resource.members = new ArrayCollection(data.members);
+							break;
+						case "entity":
+							resource.entity.data = data.entity;
+							for (var entityProperty: String in data.entity) {
+								resource.entity[entityProperty] = data.entity[entityProperty];
+							}
+							break;
+						default:
+							resource[property] = data[property];
+							break;
+					}
 				}
 			}
 			
-			resource.original = ObjectUtil.clone(resource.entity);
+			resource.original = ObjectUtil.clone(resource.entity) as GalleryEntity;
 
 			// Reset the dirty flags
 			resource._dirty = new Vector.<String>();
+			resource.entity.dirty = new Vector.<String>();
 			return resource;
 		}
 
 		public function GalleryResource() {
 			super();
 			_eventDispatcher = new EventDispatcher(this);
-			this.entity = {};
+			this.entity = new GalleryEntity();
+			this.entity.addEventListener(PropertyChangeEvent.PROPERTY_CHANGE, function(event: PropertyChangeEvent): void {
+				_eventDispatcher.dispatchEvent(event);
+			});
 			this.relationships = {};
 			this.isNew = true;
 		}
@@ -131,15 +146,15 @@ package org.gallery3.api {
 		}
 		
 		flash_proxy override function getProperty(name: *): * {
-			return _values[name] || null;
+			return _values[name.localName] || null;
 		}
 		
 		flash_proxy override function setProperty(name: *, value:  *): void {
-			var oldValue: * = _values[name];
-			_values[name] = value;
+			var propertyName: String = name.localName;
+			var oldValue: * = _values[propertyName];
+			_values[propertyName] = value;
 			var kind:String = PropertyChangeEventKind.UPDATE;
-			_dirty.push(name);
-			dispatchEvent(new PropertyChangeEvent(PropertyChangeEvent.PROPERTY_CHANGE, false, false, kind, name, oldValue, value, this));
+			dispatchEvent(new PropertyChangeEvent(PropertyChangeEvent.PROPERTY_CHANGE, false, false, kind, propertyName, oldValue, value, this));
 		}
 
 		/**
@@ -152,7 +167,14 @@ package org.gallery3.api {
 			var dirty: Boolean = isDirty;
 			
 			var params: URLVariables = new URLVariables();
-			params.entity = JSON.encode(this.entity); 
+			var entity:Object = {};
+			if (this.entity.id) {
+				entity["id"] = this.entity.id;
+			}
+			for each (var property: String in this.entity.dirty) {
+				entity[property] = this.entity[property];
+			}
+			params.entity = JSON.encode(entity);
 			if (this.members != null) {
 				params.members = JSON.encode(this.members.source);
 			}
@@ -173,6 +195,7 @@ package org.gallery3.api {
 					
 					// Reset the dirty flags
 					self._dirty = new Vector.<String>();
+					self.entity.dirty = new Vector.<String>();
 					
 					token.resource = self;
 				});
@@ -226,7 +249,7 @@ package org.gallery3.api {
 		}
 
 		public function get isDirty(): Boolean {
-			return ObjectUtil.compare(this.original, this.entity) != 0 || _dirty.length > 0;
+			return ObjectUtil.compare(this.original, this.entity) != 0 || this.entity.isDirty();
 		}
 		
 		public function get isNew(): Boolean {
