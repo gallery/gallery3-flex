@@ -66,8 +66,6 @@ package org.gallery3.organize {
 		public var imageGrid: ThumbGrid;
 		public var sortColumn: ComboBox;
 		public var sortDirection: ComboBox;
-		public var rotateCCW: Button;
-		public var rotateCW: Button;
 		public var addAlbum: Button;
 		public var addImages: Button;
 		public var deleteImages: Button;
@@ -140,12 +138,14 @@ package org.gallery3.organize {
 				},
 				function (fault: Object): void {
 					ErrorDialog.display(fault as Fault);
-				}));
+				})
+			);
+			
 			imageGrid.addEventListener("ThumbGridItemsDropped", function(event: Event): void {
 				setSortColumn("weight");
-			});
+			});			
 		}
-
+		
 		protected function albumsUpdated(event: Event): void {
 			if (openPath.length > 0) {
 				for each (var item: GalleryAlbum in event.target) {
@@ -295,7 +295,7 @@ package org.gallery3.organize {
 			if (newCount != _selectedCount) {
 				var album: GalleryAlbum = albumTree.selectedItem as GalleryAlbum;
 				_selectedCount = newCount;
-				rotateCW.enabled = rotateCCW.enabled = deleteImages.enabled = _selectedCount > 0 && album.canEdit;
+				deleteImages.enabled = _selectedCount > 0 && album.canEdit;
 			}
 		}
 

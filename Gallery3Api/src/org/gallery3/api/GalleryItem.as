@@ -196,8 +196,8 @@ package org.gallery3.api {
 						req.requestHeaders = [
 							new URLRequestHeader("Accept", "*/*"),
 							new URLRequestHeader("Cache-Control", "no-cache"),
-							new URLRequestHeader("X_GALLERY_REQUEST_METHOD", "GET"),
-							new URLRequestHeader("X_GALLERY_REQUEST_KEY", GalleryRestRequest.accessKey)
+							new URLRequestHeader(GalleryRestRequest.METHOD_HEADER, "GET"),
+							new URLRequestHeader(GalleryRestRequest.KEY_HEADER, GalleryRestRequest.accessKey)
 						];
 						var url:URL = new URL(thumbUrl);
 						var size:String = url.getParamValue("size");

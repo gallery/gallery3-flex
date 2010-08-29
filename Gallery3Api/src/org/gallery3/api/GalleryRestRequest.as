@@ -52,8 +52,8 @@ package org.gallery3.api {
 			"405": "Method Not Allowed",
 			"500": "Internal Server Error"
 		}
-		private static const X_GALLERY_REQUEST_METHOD: String = "X-Gallery-Request-Method";
-		private static const X_GALLERY_REQUEST_KEY: String = "X-Gallery-Request-Key";
+		public static const METHOD_HEADER: String        = "X-Gallery-Request-Method";
+		public static const KEY_HEADER: String           = "X-Gallery-Request-Key";
 		private static const MULTIPART_BOUNDARY: String  = "----------196f00b77b968397849367c61a2080";
 		private static const MULTIPART_MARK: String      = "--";
 		private static const LF: String                  = "\r\n";
@@ -200,8 +200,8 @@ package org.gallery3.api {
 			request.requestHeaders = [
 				new URLRequestHeader("Accept", "*/*"),
 				new URLRequestHeader("Cache-Control", "no-cache"),
-				new URLRequestHeader("X_GALLERY_REQUEST_METHOD", _method),
-				new URLRequestHeader("X_GALLERY_REQUEST_KEY", _requestAccessKey)
+				new URLRequestHeader(METHOD_HEADER, _method),
+				new URLRequestHeader(KEY_HEADER, _requestAccessKey)
 				];
 			if (isMultipartData) {
 				request.data = _buildMultipartBody();
