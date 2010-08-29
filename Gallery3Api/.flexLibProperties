@@ -5,6 +5,7 @@
     <classEntry path="org.gallery3.api.GalleryRestToken"/>
     <classEntry path="org.gallery3.api.GalleryRestResponder"/>
     <classEntry path="org.gallery3.api.GalleryTag"/>
+    <classEntry path="org.gallery3.api.GalleryEntity"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
