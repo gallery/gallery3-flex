@@ -54,16 +54,14 @@ package org.gallery3.organize {
 					return _data["protocol"] + "://" + _data["domain"] + _data["restUri"];
 				case "controller":
 					return _data["protocol"] + "://" + _data["domain"] + _data["controllerUri"];
-				default:
-					return _data[name.localName];				
 			}
 			
-			return _data[name];
+			return _data[name.localName];
 		}
 		
 		flash_proxy override function setProperty(name: *, value: *): void {
-			var oldValue: * = _data[name];
-			_data[name] = value;
+			var oldValue: * = _data[name.localName];
+			_data[name.localName] = value;
 			dispatchEvent(PropertyChangeEvent.createUpdateEvent(this, name, oldValue, value));
 		}
 		
