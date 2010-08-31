@@ -86,6 +86,11 @@ package org.gallery3.api {
 						loadAlbums();
 					}
 					return _albums;
+				case "children":
+					if ((!_childrenLoaded && (this.members.source as Array).length > 0)) {
+						loadChildren();
+					}
+					return _children;
 				default:
 					// Do nothing;
 					break;

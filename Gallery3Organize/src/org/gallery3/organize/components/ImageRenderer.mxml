@@ -35,8 +35,9 @@
 			import mx.core.BitmapAsset;
 			import mx.events.FlexEvent;
 			
-			import org.gallery3.organize.OrganizeStyle;
 			import org.gallery3.api.GalleryItem;
+			import org.gallery3.organize.OrganizeParameters;
+			import org.gallery3.organize.OrganizeStyle;
 
 			private const THUMBNAIL_MAX_SIZE:Number = 90;
 			private const THUMBNAIL_CELL_WIDTH:Number = 100;
