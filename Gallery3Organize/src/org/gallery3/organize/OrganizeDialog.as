@@ -34,6 +34,7 @@ package org.gallery3.organize {
 	import mx.binding.utils.BindingUtils;
 	import mx.collections.ArrayCollection;
 	import mx.containers.HDividedBox;
+	import mx.events.CollectionEvent;
 	import mx.events.FlexEvent;
 	import mx.managers.PopUpManager;
 	import mx.rpc.Fault;
@@ -89,6 +90,8 @@ package org.gallery3.organize {
 		
 		[Bindable]
 		protected var sortDirectionData: ArrayCollection = new ArrayCollection();
+
+		private static var selectedId: int = OrganizeParameters.instance.selectedId;
 		
 		public function OrganizeDialog() {
 			super();
@@ -263,7 +266,17 @@ package org.gallery3.organize {
 			if (albumTree.selectedIndex >= 0) {
 				var album: GalleryAlbum = albumTree.selectedItem as GalleryAlbum;
 				album.loadChildren();
-				imageGrid.dataProvider = album; 
+				imageGrid.dataProvider = album;
+				// If we have received a selected item id as an input 
+				// parameter, then set up a listener to catch when the item
+				// is actually loaded and added to the album.  We will then
+				// check the id and if its the one we want then we will
+				// set the selectedItem property of the imageGrid.  We
+				// only do this the first time.				
+				if (selectedId != 0) {
+					album.addEventListener(CollectionEvent.COLLECTION_CHANGE, 
+						_initialCollectionChanged);
+				}
 				sortColumn.enabled = album.canEdit;
 				sortDirection.enabled = album.canEdit;
 				addAlbum.enabled = album.canEdit;
@@ -279,6 +292,14 @@ package org.gallery3.organize {
 					StringUtil.replace(title, char, chars[char]);
 				} 
 				ExternalInterface.call("setTitle", title);
+			}
+		}
+		
+		private function _initialCollectionChanged(event:CollectionEvent): void {
+			if (event.items[0].id == selectedId) {
+				imageGrid.selectedItem = event.items[0];
+				selectedId = 0;
+				event.target.removeEventListener(CollectionEvent.COLLECTION_CHANGE, _initialCollectionChanged);
 			}
 		}
 		

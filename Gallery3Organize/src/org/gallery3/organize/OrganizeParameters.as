@@ -55,7 +55,7 @@ package org.gallery3.organize {
 				case "controller":
 					return _data["protocol"] + "://" + _data["domain"] + _data["controllerUri"];
 				default:
-					return _data[name];				
+					return _data[name.localName];				
 			}
 			
 			return _data[name];
