@@ -146,7 +146,7 @@ package org.gallery3.api {
 		}
 		
 		flash_proxy override function getProperty(name: *): * {
-			return _values[name.localName] || null;
+			return _values[name] || null;
 		}
 		
 		flash_proxy override function setProperty(name: *, value:  *): void {
