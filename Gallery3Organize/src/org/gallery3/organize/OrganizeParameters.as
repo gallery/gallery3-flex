@@ -21,8 +21,8 @@ package org.gallery3.organize {
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import flash.external.ExternalInterface;
-	import flash.utils.flash_proxy;
 	import flash.utils.Proxy;
+	import flash.utils.flash_proxy;
 	
 	import mx.events.PropertyChangeEvent;
 
@@ -54,6 +54,10 @@ package org.gallery3.organize {
 					return _data["protocol"] + "://" + _data["domain"] + _data["restUri"];
 				case "controller":
 					return _data["protocol"] + "://" + _data["domain"] + _data["controllerUri"];
+				case "url":
+					var restUri: String = _data["restUri"];
+					var url: String = restUri.substring(0, restUri.indexOf("rest/"));
+					return _data["protocol"] + "://" + _data["domain"] + url;
 			}
 			
 			return _data[name.localName];

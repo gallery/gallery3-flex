@@ -321,7 +321,17 @@ package org.gallery3.organize {
 		}
 
 		public function onDialogClose(event:FlexEvent): void {
-			ExternalInterface.call("closeOrganizeDialog");
+			var album: GalleryAlbum = albumTree.selectedItem as GalleryAlbum;
+			
+			var path: String = "";
+			while (album.id != 1) {
+				if (path.length > 0) {
+					path = "/" + path;
+				}
+				path = (album.slug != null ? album.slug : "") + path;
+				album = albumTree.getParentItem(album) as GalleryAlbum;
+			} 
+			ExternalInterface.call("closeOrganizeDialog", OrganizeParameters.instance.url + path);
 		}
 		
 		protected function onSortColumnChange(event:IndexChangeEvent): void {
