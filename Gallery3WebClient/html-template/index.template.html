@@ -48,8 +48,15 @@
 		    
         <script type="text/javascript" src="swfobject.js"></script>
         <script type="text/javascript">
-            function closeOrganizeDialog(url) {
-              console.log("Closing: " + url);
+            var reloadLocation = null;
+            function closeOrganizeDialog() {
+              if (reloadLocation != null) {
+                console.log("Closing: " + reloadLocation);
+              }
+            }
+            function setLocation(url) {
+              console.log("setLocation: " + url);
+              reloadLocation = url;
             }
             function setTitle(title) {
             	// @todo remove the comment from the following line before a release build

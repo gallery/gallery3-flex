@@ -292,6 +292,18 @@ package org.gallery3.organize {
 					StringUtil.replace(title, char, chars[char]);
 				} 
 				ExternalInterface.call("setTitle", title);
+				
+				var path: String = "";
+				while (album.id != 1) {
+					if (path.length > 0) {
+						path = "/" + path;
+					}
+					path = (album.slug != null ? album.slug : "") + path;
+					album = albumTree.getParentItem(album) as GalleryAlbum;
+				}
+				
+				ExternalInterface.call("setLocation", OrganizeParameters.instance.url + path);
+
 			}
 		}
 		
@@ -321,17 +333,7 @@ package org.gallery3.organize {
 		}
 
 		public function onDialogClose(event:FlexEvent): void {
-			var album: GalleryAlbum = albumTree.selectedItem as GalleryAlbum;
-			
-			var path: String = "";
-			while (album.id != 1) {
-				if (path.length > 0) {
-					path = "/" + path;
-				}
-				path = (album.slug != null ? album.slug : "") + path;
-				album = albumTree.getParentItem(album) as GalleryAlbum;
-			} 
-			ExternalInterface.call("closeOrganizeDialog", OrganizeParameters.instance.url + path);
+			ExternalInterface.call("closeOrganizeDialog");
 		}
 		
 		protected function onSortColumnChange(event:IndexChangeEvent): void {
