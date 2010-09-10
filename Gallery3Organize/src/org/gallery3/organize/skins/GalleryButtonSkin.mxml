@@ -63,7 +63,7 @@
 	</s:Rect>
 	
 	<!-- text -->
-	<s:Label id="labelDisplay" color="{borderColor}" 
+	<s:Label id="labelDisplay" color="{foreColor}" 
 			 textAlign="center"
 			 verticalAlign="middle"
 			 horizontalCenter="0" verticalCenter="1"
